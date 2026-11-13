@@ -4,6 +4,13 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
 <title>VĨNH KIẾP — Roguelike Sinh Tồn Offline</title>
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#07080f">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Vĩnh Kiếp">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚔️</text></svg>">
 <style>
 :root{
@@ -76,6 +83,10 @@ button:focus-visible,.node:focus-visible{outline:2px solid var(--cyan);outline-o
 .tStat b{color:var(--ink)} .tStat.g b{color:var(--gold)} .tStat.c b{color:var(--cyan)} .tStat.m b{color:var(--mag)}
 .tMenu{display:flex;flex-direction:column;gap:10px;width:min(330px,86vw)}
 .tRow{display:flex;gap:10px}.tRow .btn{flex:1}
+.btn.install{background:linear-gradient(180deg,#123a6e,#0f4d5e);border-color:var(--cyan);color:var(--cyan);box-shadow:0 0 18px -4px rgba(62,230,255,.45)}
+.btn.install:hover{box-shadow:0 0 26px -2px rgba(62,230,255,.7)}
+.insStep{display:flex;gap:10px;align-items:flex-start;margin:10px 0;font-size:13.5px;line-height:1.6;color:var(--ink)}
+.insStep b.n{flex:none;width:24px;height:24px;border-radius:50%;background:var(--panel2);border:1px solid var(--line2);color:var(--cyan);display:flex;align-items:center;justify-content:center;font-size:12px}
 .ver{margin-top:16px;color:var(--dim);font-size:11px;letter-spacing:.14em;text-transform:uppercase;text-align:center;line-height:1.9}
 .rGrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(236px,1fr));gap:14px}
 .hCard{position:relative;background:linear-gradient(165deg,#171b3c,#0e1126);border:1px solid var(--line);border-radius:15px;padding:14px;cursor:pointer;transition:transform .16s,border-color .16s,box-shadow .16s;overflow:hidden}
@@ -394,6 +405,7 @@ body.touch .onKb{display:none}
           <button class="btn ghost" id="btnSet">⚙️ Cài Đặt</button>
           <button class="btn ghost" id="btnGuide">❓ Hướng Dẫn</button>
         </div>
+        <button class="btn install" id="btnInstall">📲 Cài Về Máy</button>
       </div>
       <div class="ver">v1.1 • Chơi hoàn toàn ngoại tuyến<br>Tiến trình lưu trên thiết bị của bạn</div>
     </div>
@@ -462,6 +474,11 @@ body.touch .onKb{display:none}
     <div id="rsTip"></div><div class="rsBtns" id="rsBtns"></div>
   </div>
 
+  <div class="modal" id="mInstall" style="max-width:440px">
+    <div class="mTitle">Cài Về Máy</div><div class="mSub">Chơi toàn màn hình, không cần mạng</div>
+    <div id="insBody"></div>
+    <div class="pzBtns"><button class="btn gold" id="btnInstallOk">Đã Rõ</button></div>
+  </div>
   <div class="modal" id="mGuide" style="max-width:620px">
     <div class="mTitle">Bí Kíp Sinh Tồn</div><div class="mSub">Đọc 30 giây — sống thêm 5 phút</div>
     <div class="gRow"><span class="kbd"><span class="onKb">WASD</span><span class="onTc">👆</span></span><span><span class="onKb">Di chuyển (hoặc phím mũi tên)</span><span class="onTc">Chạm &amp; kéo ở nửa trái màn hình — joystick hiện ra tại ngón tay</span></span></div>
@@ -1487,6 +1504,26 @@ on($('btnShop'),'click',()=>{sfx('click');UI.show('scrShop')});
 on($('btnAch'),'click',()=>{sfx('click');UI.show('scrAch')});
 on($('btnSet'),'click',()=>{sfx('click');UI.show('scrSettings')});
 on($('btnGuide'),'click',()=>{sfx('click');openModal('mGuide')});
+/* ===== Cài về máy (PWA) ===== */
+let deferredInstall=null;
+const isStandalone=()=>matchMedia('(display-mode: standalone)').matches||matchMedia('(display-mode: fullscreen)').matches||navigator.standalone===true;
+function refreshInstallBtn(){$('btnInstall').style.display=isStandalone()?'none':''}
+window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();deferredInstall=e;refreshInstallBtn()});
+window.addEventListener('appinstalled',()=>{deferredInstall=null;refreshInstallBtn();toast('Đã cài về máy! Mở game từ màn hình chính nhé.','')});
+function showInstallHelp(){
+ const ios=/iphone|ipad|ipod/i.test(navigator.userAgent)||(navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1);
+ const steps=ios?['Mở trang này bằng <b>Safari</b>.','Bấm nút <b>Chia sẻ</b> (hình vuông có mũi tên ↑).','Chọn <b>Thêm vào MH chính</b> rồi bấm <b>Thêm</b>.']
+  :['Bấm menu <b>⋮</b> (hoặc <b>⋯</b>) của trình duyệt.','Chọn <b>Cài đặt ứng dụng</b> / <b>Thêm vào màn hình chính</b>.','Xác nhận <b>Cài đặt</b> — biểu tượng game sẽ hiện trên màn hình chính.'];
+ if(location.protocol==='file:')steps.unshift('Cần mở game qua địa chỉ <b>https://</b> (ví dụ GitHub Pages) thì mới cài được.');
+ $('insBody').innerHTML=steps.map((t,i)=>'<div class="insStep"><b class="n">'+(i+1)+'</b><span>'+t+'</span></div>').join('');
+ openModal('mInstall')}
+on($('btnInstall'),'click',async()=>{
+ sfx('click');
+ if(deferredInstall){const d=deferredInstall;deferredInstall=null;try{d.prompt();await d.userChoice}catch(e){}return}
+ showInstallHelp()});
+on($('btnInstallOk'),'click',()=>{sfx('click');closeModal()});
+refreshInstallBtn();
+if('serviceWorker' in navigator&&location.protocol!=='file:'){window.addEventListener('load',()=>{navigator.serviceWorker.register('sw.js').catch(()=>{})})}
 on($('btnGuideOk'),'click',()=>{sfx('click');save.seenGuide=true;saveSoon();closeModal()});
 function buildRoster(){const g=$('rosterGrid');g.innerHTML='';
  $('rosterCount').textContent=save.chars.length+'/12 đã mở khóa';

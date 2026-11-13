@@ -60,3 +60,4 @@ Bản này mới được kiểm tra bằng trình duyệt giả lập; chưa th
 - Sửa lỗi bấm **Bản đồ** / **Nâng cấp** trên màn Chiến Thắng không phản hồi (bảng kết quả không được đóng nên chặn mọi lần bấm); 4 nút kết quả xếp đều 2×2.
 - Thêm tốc độ ×1,25 và ×1,5 (nút ×N trong trận bấm xoay vòng, Cài đặt có đủ 4 mức).
 - HUD màn dọc gọn lại: HP + cấp ở góc trái trên (không còn nổi giữa màn hình), nút âm thanh / tốc độ / tạm dừng xếp một cột đều nhau, radar nằm ngay dưới, thanh trùm dời xuống dưới HP.
+- Thêm nút **📲 Cài Về Máy** ở màn hình chính: bấm là hiện hộp xác nhận cài đặt của trình duyệt (Chrome/Edge/Android); nếu trình duyệt không hỗ trợ thì hiện hướng dẫn từng bước (iPhone: Safari → Chia sẻ → Thêm vào MH chính). Nút tự ẩn khi game đã chạy như ứng dụng. Có `manifest.webmanifest`, `sw.js` (chơi offline) và icon — **đưa đủ các file này lên cùng thư mục** và mở qua https (GitHub Pages) thì mới cài được. Mỗi lần phát hành bản mới, đổi `VERSION` trong `sw.js`.
