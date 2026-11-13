@@ -199,7 +199,7 @@ body.touch .cdBtn .key{display:none}
 body.touch #skillBtn{width:84px;height:84px}body.touch #dashBtn{width:66px;height:66px}
 #modals{position:fixed;inset:0;z-index:20;display:none;align-items:center;justify-content:center;background:rgba(4,5,12,.72);backdrop-filter:blur(6px);padding:14px}
 #modals.on{display:flex}
-.modal{display:none;width:min(920px,96vw);max-height:92vh;overflow-y:auto;background:linear-gradient(170deg,#171b3e,#0d1024);border:1px solid var(--line2);border-radius:18px;padding:24px;position:relative;box-shadow:0 30px 80px -20px rgba(0,0,0,.9),0 0 60px -20px rgba(167,139,255,.3);animation:mIn .28s cubic-bezier(.2,1.3,.4,1)}
+.modal{--mp:24px;display:none;width:min(920px,96vw);max-height:92vh;overflow-y:auto;background:linear-gradient(170deg,#171b3e,#0d1024);border:1px solid var(--line2);border-radius:18px;padding:var(--mp);position:relative;box-shadow:0 30px 80px -20px rgba(0,0,0,.9),0 0 60px -20px rgba(167,139,255,.3);animation:mIn .28s cubic-bezier(.2,1.3,.4,1)}
 .modal.active{display:block}
 .modal::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;border-radius:18px 18px 0 0;background:linear-gradient(90deg,var(--cyan),var(--vio),var(--mag))}
 @keyframes mIn{from{opacity:0;transform:scale(.92) translateY(16px)}to{opacity:1;transform:none}}
@@ -283,6 +283,49 @@ body.touch #skillBtn{width:84px;height:84px}body.touch #dashBtn{width:66px;heigh
   .essChip b{font-size:15px}
   .mhead{gap:8px}
   .mhead h2{font-size:15px}
+}
+/* ===== Fix theo review: mobile + hướng dẫn theo thiết bị ===== */
+.hudChip{white-space:nowrap;flex:none}
+.onTc{display:none}
+body.touch .onTc{display:inline}
+body.touch .onKb{display:none}
+#mStage .mTitle,#mStage .mSub{padding:0 42px}
+#mPause .pzBtns{position:sticky;bottom:0;z-index:3;margin:16px calc(var(--mp)*-1) calc(var(--mp)*-1);padding:12px var(--mp) 14px;background:linear-gradient(180deg,rgba(13,16,36,0),#0d1024 28%)}
+.lvCard .lp:empty{display:none}
+@media(max-width:760px){
+  .modal{--mp:16px;max-height:94vh;max-height:94dvh}
+  #muteBtn{top:8px;right:8px;width:40px;height:40px;font-size:18px}
+  .hudTop{top:8px;left:8px;right:56px;gap:6px}
+  .hudChip{padding:5px 8px;font-size:11px;gap:4px;border-radius:9px}
+  .stB{display:none}
+  #hudTimerBox{padding:3px 10px;margin:0 auto}
+  #hudTimer{font-size:19px}
+  #hudPhase{font-size:8.5px;letter-spacing:.14em}
+  .hudBtns{position:fixed;top:54px;right:8px;gap:6px}
+  .hBtn{width:44px;height:44px}
+  #bossBar{top:60px;left:8px;right:104px;width:auto;transform:none}
+  #radar{top:104px;right:8px}
+}
+@media(max-width:760px) and (min-height:481px){
+  .lvCards{gap:8px;max-height:none;overflow:visible}
+  .lvCard{display:grid;grid-template-columns:44px 1fr;column-gap:10px;align-items:center;text-align:left;padding:10px 12px}
+  .lvCard:hover{transform:none}
+  .lvCard .li{grid-column:1;grid-row:1/span 6;font-size:30px;margin:0;text-align:center}
+  .lvCard .ln,.lvCard .lt,.lvCard .lp,.lvCard .ld,.lvCard .rarTag{grid-column:2;margin:0}
+  .lvCard .ln{font-size:14px}
+  .lvCard .lt{justify-self:start;margin:3px 0}
+  .lvCard .lp{margin-bottom:3px}
+  .lvCard .num{top:3px;left:5px;font-size:9px;padding:0 5px}
+  body.touch .lvCard .num{display:none}
+  .mSub{margin:4px 0 10px}
+}
+@media(max-width:760px) and (max-height:480px){
+  .modal{--mp:14px}
+  .lvCards{grid-template-columns:repeat(3,1fr);gap:8px;max-height:none;overflow:visible}
+  .lvCard{padding:8px}
+  .lvCard .li{font-size:24px;margin:2px 0 4px}
+  .lvCard .ld{font-size:10.5px;line-height:1.35}
+  .mSub{margin:3px 0 8px}
 }
 @media(prefers-reduced-motion:reduce){
   .runeRing,.runeRing::after{animation:none}
@@ -415,11 +458,11 @@ body.touch #skillBtn{width:84px;height:84px}body.touch #dashBtn{width:66px;heigh
 
   <div class="modal" id="mGuide" style="max-width:620px">
     <div class="mTitle">Bí Kíp Sinh Tồn</div><div class="mSub">Đọc 30 giây — sống thêm 5 phút</div>
-    <div class="gRow"><span class="kbd">WASD</span><span>Di chuyển (hoặc joystick cảm ứng / phím mũi tên)</span></div>
-    <div class="gRow"><span class="kbd">SPACE</span><span>Lướt né — bất tử trong khoảnh khắc</span></div>
-    <div class="gRow"><span class="kbd">E</span><span>Kỹ năng riêng của anh hùng</span></div>
-    <div class="gRow"><span class="kbd">1·2·3</span><span>Chọn cường hóa khi thăng cấp · <b>R</b> đổi · <b>Esc</b> tạm dừng</span></div>
-    <div class="gNote">⚔️ Vũ khí <b>tự tấn công</b> — việc của bạn là né và lùa quái.<br>💎 Nhặt ngọc kinh nghiệm để thăng cấp, ghép tối đa <b>4 vũ khí + 5 bí pháp</b>.<br>👹 Tinh anh rơi <b>rương báu</b>. Ải trùm: hạ trùm để thắng. Ải thường: sống sót <b>5:00</b> rồi chạm cổng dịch chuyển.<br>✦ Tinh Hoa nhận được dùng để <b>nâng cấp vĩnh viễn</b> và mở khóa anh hùng mới — tử trận vẫn giữ!</div>
+    <div class="gRow"><span class="kbd"><span class="onKb">WASD</span><span class="onTc">👆</span></span><span><span class="onKb">Di chuyển (hoặc phím mũi tên)</span><span class="onTc">Chạm &amp; kéo ở nửa trái màn hình — joystick hiện ra tại ngón tay</span></span></div>
+    <div class="gRow"><span class="kbd"><span class="onKb">SPACE</span><span class="onTc">💨</span></span><span>Lướt né — bất tử trong khoảnh khắc<span class="onTc"> (nút 💨 bên phải)</span></span></div>
+    <div class="gRow"><span class="kbd"><span class="onKb">E</span><span class="onTc">⚔️</span></span><span>Kỹ năng riêng của anh hùng<span class="onTc"> (nút to bên phải)</span></span></div>
+    <div class="gRow"><span class="kbd"><span class="onKb">1·2·3</span><span class="onTc">☝️</span></span><span><span class="onKb">Chọn cường hóa khi thăng cấp · <b>R</b> đổi · <b>Esc</b> tạm dừng</span><span class="onTc">Chạm thẻ để chọn cường hóa khi thăng cấp · nút <b>⏸</b> góc trên phải để tạm dừng</span></span></div>
+    <div class="gNote">⚔️ Vũ khí <b>tự tấn công</b> — việc của bạn là né và lùa quái.<br>💎 Nhặt ngọc kinh nghiệm để thăng cấp, mỗi anh hùng có <b>vũ khí độc quyền</b>, ghép thêm Ngũ Hành Châu và tối đa <b>5 bí pháp</b>.<br>👹 Tinh anh rơi <b>rương báu</b>. Ải trùm: hạ trùm để thắng. Ải thường: sống sót <b>5:00</b> rồi chạm cổng dịch chuyển.<br>✦ Tinh Hoa nhận được dùng để <b>nâng cấp vĩnh viễn</b> và mở khóa anh hùng mới — tử trận vẫn giữ!</div>
     <div class="pzBtns"><button class="btn gold" id="btnGuideOk">Đã Rõ!</button></div>
   </div>
 
@@ -479,19 +522,19 @@ const STAGE_NAMES=[
 'Thềm Tro Nóng','Sông Dung Nham','Ruộng Than Hồng','Lò Rèn Bỏ Hoang','Vực Lưu Huỳnh','Cổng Tro Bay','Biển Nham Thạch','Tháp Luyện Ngục','Trái Tim Hỏa Diệm','Ngai Hỏa Chúa',
 'Rìa Thực Tại','Bãi Sao Rơi','Mê Lộ Lệch','Vườn Tinh Tụ','Khe Nứt Không Gian','Đài Quan Sát Cổ','Biển Tĩnh Lặng','Cầu Vồng Đen','Cửa Xoáy Hư Không','Ngai Vua Hư Không'];
 const WEAPONS={
- w_sword:{n:'Kiếm Khí',icon:'🗡️',d:'Chém vòng cung trước mặt. Lv5: chém kép hai phía.',cd:l=>.95-.06*l},
- w_bolt:{n:'Tiên Tiễn',icon:'🔮',d:'Tên phép tự truy đuổi kẻ địch gần nhất. Thêm mũi mỗi 2 cấp.',cd:l=>.8-.04*l},
- w_arrow:{n:'Liên Tiễn',icon:'🏹',d:'Tên xuyên thấu cực nhanh, xuyên thêm theo cấp.',cd:l=>.7-.04*l},
- w_knife:{n:'Phi Đao',icon:'🔪',d:'Phóng quạt dao về phía địch, số dao tăng theo cấp.',cd:l=>.85-.05*l},
- w_fire:{n:'Hỏa Cầu',icon:'🔥',d:'Cầu lửa phát nổ diện rộng và thiêu đốt kẻ địch.',cd:l=>1.15-.06*l},
- w_ice:{n:'Băng Tiễn',icon:'❄️',d:'Mảnh băng làm chậm 45%. Lv5: đóng băng thoáng chốc.',cd:l=>.85-.04*l},
- w_light:{n:'Sấm Liên Hoàn',icon:'⚡',d:'Sét nhảy dây chuyền giữa kẻ địch, +1 mục tiêu mỗi cấp.',cd:l=>1.25-.06*l},
+ w_sword:{only:'knight',n:'Kiếm Khí',icon:'🗡️',d:'Chém vòng cung trước mặt. Lv5: chém kép hai phía.',cd:l=>.95-.06*l},
+ w_bolt:{only:'mage',n:'Tiên Tiễn',icon:'🔮',d:'Tên phép tự truy đuổi kẻ địch gần nhất. Thêm mũi mỗi 2 cấp.',cd:l=>.8-.04*l},
+ w_arrow:{only:'ranger',n:'Liên Tiễn',icon:'🏹',d:'Tên xuyên thấu cực nhanh, xuyên thêm theo cấp.',cd:l=>.7-.04*l},
+ w_knife:{only:'assassin',n:'Phi Đao',icon:'🔪',d:'Phóng quạt dao về phía địch, số dao tăng theo cấp.',cd:l=>.85-.05*l},
+ w_fire:{only:'pyro',n:'Hỏa Cầu',icon:'🔥',d:'Cầu lửa phát nổ diện rộng và thiêu đốt kẻ địch.',cd:l=>1.15-.06*l},
+ w_ice:{only:'frost',n:'Băng Tiễn',icon:'❄️',d:'Mảnh băng làm chậm 45%. Lv5: đóng băng thoáng chốc.',cd:l=>.85-.04*l},
+ w_light:{only:'storm',n:'Sấm Liên Hoàn',icon:'⚡',d:'Sét nhảy dây chuyền giữa kẻ địch, +1 mục tiêu mỗi cấp.',cd:l=>1.25-.06*l},
  w_orb:{n:'Ngũ Hành Châu',icon:'🪐',d:'Các châu quay quanh bạn, nghiền mọi kẻ chạm phải.',cd:l=>1},
- w_holy:{n:'Thánh Phạt',icon:'✨',d:'Cột sáng trời giáng xuống kẻ địch ngẫu nhiên.',cd:l=>1.4-.07*l},
- w_rocket:{n:'Hỏa Tiễn',icon:'🚀',d:'Tên lửa tăng tốc, nổ lớn. Lv4: phóng đôi.',cd:l=>1.6-.08*l},
- w_drain:{n:'Hắc Ám Thôn',icon:'🌀',d:'Vầng hào quang hút sinh lực địch, hồi máu cho bạn.',cd:l=>.5},
- w_palm:{n:'Chưởng Lực',icon:'👊',d:'Chưởng phong đẩy lùi cả đám đông phía trước.',cd:l=>1-.05*l},
- w_scythe:{n:'Huyết Liêm',icon:'🌙',d:'Lưỡi hái xoay 360°, hút 5% máu gây ra.',cd:l=>1.3-.06*l}};
+ w_holy:{only:'paladin',n:'Thánh Phạt',icon:'✨',d:'Cột sáng trời giáng xuống kẻ địch ngẫu nhiên.',cd:l=>1.4-.07*l},
+ w_rocket:{only:'engineer',n:'Hỏa Tiễn',icon:'🚀',d:'Tên lửa tăng tốc, nổ lớn. Lv4: phóng đôi.',cd:l=>1.6-.08*l},
+ w_drain:{only:'necro',n:'Hắc Ám Thôn',icon:'🌀',d:'Vầng hào quang hút sinh lực địch, hồi máu cho bạn.',cd:l=>.5},
+ w_palm:{only:'monk',n:'Chưởng Lực',icon:'👊',d:'Chưởng phong đẩy lùi cả đám đông phía trước.',cd:l=>1-.05*l},
+ w_scythe:{only:'reaper',n:'Huyết Liêm',icon:'🌙',d:'Lưỡi hái xoay 360°, hút 5% máu gây ra.',cd:l=>1.3-.06*l}};
 const PASSIVES={
  p_might:{n:'Cự Lực',icon:'💪',d:'+12% sát thương mỗi cấp'},
  p_haste:{n:'Cuồng Phong',icon:'⏱️',d:'+10% tốc độ tấn công mỗi cấp'},
@@ -797,7 +840,7 @@ function startRun(n){
  cam.x=0;cam.y=0;cam.shake=0;
  GS='play';UI.hideScreens();closeModal();
  $('hud').classList.add('on');$('touchUI').classList.add('on');
- $('hudStage').innerHTML=BIOMES[cfg.biome].icon+' '+(cfg.endless?'Vô Tận':'Ải '+n+' · '+BIOMES[cfg.biome].n);
+ $('hudStage').innerHTML=BIOMES[cfg.biome].icon+' '+(cfg.endless?'Vô Tận':'Ải '+n+'<span class="stB"> · '+BIOMES[cfg.biome].n+'</span>');
  $('skillIco').textContent=SKILLS[ch.s].icon;
  $('bossBar').classList.remove('on');
  drawSprCv($('portrait'),SPR['h_'+ch.id],.92);
@@ -805,7 +848,7 @@ function startRun(n){
  A.playMusic('field',cfg.biome);
  banner(cfg.endless?'VỰC VÔ TẬN':('ẢI '+n+' — '+cfg.name));
  if(cfg.boss)delay(2,()=>banner('Trùm sẽ xuất hiện sau 4:10','boss'));
- if(n===1&&!save.seenGuide2){save.seenGuide2=true;saveSoon();delay(1,()=>toast('⚔️ Vũ khí tự đánh — hãy di chuyển & né!','ok'));delay(4,()=>toast('💎 Nhặt ngọc xanh để thăng cấp',''));delay(8,()=>toast('💨 Space = lướt né · E = kỹ năng',''))}
+ if(n===1&&!save.seenGuide2){save.seenGuide2=true;saveSoon();delay(1,()=>toast('⚔️ Vũ khí tự đánh — hãy di chuyển & né!','ok'));delay(4,()=>toast('💎 Nhặt ngọc xanh để thăng cấp',''));delay(8,()=>toast(isTouch?'💨 Nút 💨 = lướt né · nút to = kỹ năng':'💨 Space = lướt né · E = kỹ năng',''))}
 }
 function applyStats(full){const ch=run.ch,u=save.upgrades,ps=run.ps,L=id=>ps[id]||0;
  const st=run.st;
@@ -974,7 +1017,7 @@ function fireWeapon(w){const p=run.p,lv=w.lv,a=aimAng();
    for(const e of run.es){if(e.dead)continue;if(dist(e,p)<r+e.r){const before=e.hp;hitEnemy(e,dmg,{noCrit:true});dealt+=before-Math.max(0,e.hp)}}
    if(dealt>0)healP(dealt*.05);break}
   case 'w_palm':{const range=92+lv*6,arc=2.4,dmg=10+lv*5;arcFx(p.x,p.y,a,range,arc,.22,'#7fe9ff');sfx('slash');
-   for(const e of run.es){if(e.dead)continue;const d=dist(e,p);if(d<range+e.r){let da=Math.atan2(e.y-p.y,e.x-p.x)-a;da=Math.atan2(Math.sin(da),Math.cos(da));if(Math.abs(da)<arc/2)hitEnemy(e,dmg,{knock:300,ang})}}break}
+   for(const e of run.es){if(e.dead)continue;const d=dist(e,p);if(d<range+e.r){let da=Math.atan2(e.y-p.y,e.x-p.x)-a;da=Math.atan2(Math.sin(da),Math.cos(da));if(Math.abs(da)<arc/2)hitEnemy(e,dmg,{knock:300,ang:a})}}break}
   case 'w_scythe':{const r=88+lv*6,dmg=13+lv*6;arcFx(p.x,p.y,run.t*4,r,TAU*.92,.24,'#ff6a80');sfx('slash');
    for(const e of run.es){if(e.dead)continue;if(dist(e,p)<r+e.r)hitEnemy(e,dmg,{ls:.05,knock:100})}break}
  }
@@ -1021,7 +1064,7 @@ function gainXP(v){run.xp+=v*run.st.xpm;
 let lvOptions=[],lvChest=false;
 function rollOptions(){const pool=[];
  run.ws.forEach(w=>{if(w.lv<5)pool.push({kind:'w',id:w.id,lv:w.lv,wt:3})});
- if(run.ws.length<4)Object.keys(WEAPONS).forEach(id=>{if(!run.ws.find(w=>w.id===id))pool.push({kind:'w',id,nw:true,wt:2})});
+ if(run.ws.length<4)Object.keys(WEAPONS).forEach(id=>{if(!run.ws.find(w=>w.id===id)&&(!WEAPONS[id].only||WEAPONS[id].only===run.ch.id))pool.push({kind:'w',id,nw:true,wt:2})});
  Object.keys(run.ps).forEach(id=>{if(run.ps[id]<5)pool.push({kind:'p',id,lv:run.ps[id],wt:2.5})});
  if(Object.keys(run.ps).length<5)Object.keys(PASSIVES).forEach(id=>{if(!(id in run.ps))pool.push({kind:'p',id,nw:true,wt:1.5})});
  const opts=[];
@@ -1035,7 +1078,7 @@ function rollOptions(){const pool=[];
 function openLevel(chest){lvChest=chest;GS='levelup';lvOptions=rollOptions();
  const mL=$('mLevel');mL.classList.toggle('gold',chest);
  $('lvTitle').textContent=chest?'👑 RƯƠNG TINH ANH':'THĂNG CẤP — Lv '+run.lvl;
- $('lvSub').textContent=chest?'Chiến lợi phẩm hiếm — chọn một cường hóa':'Chọn một cường hóa (phím 1·2·3)';
+ $('lvSub').textContent=chest?'Chiến lợi phẩm hiếm — chọn một cường hóa':isTouch?'Chạm một thẻ để chọn cường hóa':'Chọn một cường hóa (phím 1·2·3)';
  const box=$('lvCards');box.innerHTML='';
  lvOptions.forEach((o,i)=>{const card=h('div','lvCard'+(o.rar==='r'?' rar':o.rar==='l'?' leg':''));
   let icon,name,type,lvStr,desc;
