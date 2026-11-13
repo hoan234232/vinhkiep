@@ -1,5 +1,5 @@
 /* Service worker: chơi offline. Đổi VERSION mỗi lần phát hành bản mới. */
-const VERSION = 'vinhkiep-v1.2';
+const VERSION = 'vinhkiep-v1.3';
 const FILES = ['./', './index.html', './manifest.webmanifest', './icon-192.png', './icon-512.png', './apple-touch-icon.png'];
 
 self.addEventListener('install', e => {

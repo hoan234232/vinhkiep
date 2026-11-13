@@ -622,7 +622,7 @@ const META=[
  {id:'crt',n:'Cuồng Nộ',icon:'🎯',d:'+3% chí mạng mỗi cấp',max:6,base:40},
  {id:'rev',n:'Luân Hồi',icon:'♻️',d:'+1 lần tự hồi sinh mỗi trận',max:2,base:350},
  {id:'ess',n:'Phú Quý',icon:'✦',d:'+8% Tinh Hoa nhận mỗi cấp',max:5,base:50},
- {id:'lvl',n:'Khởi Đầu',icon:'🚀',d:'Vào trận ở cấp cao hơn +1 mỗi cấp',max:3,base:120}];
+ {id:'lvl',n:'Khởi Đầu',icon:'🚀',d:'Vào trận cao hơn +1 cấp mỗi cấp — được chọn thẻ cường hóa ngay',max:3,base:120}];
 const metaCost=(u,lv)=>Math.round(u.base*Math.pow(lv+1,1.55)/5)*5;
 const clearedCount=()=>Object.keys(save.stars).length;
 const starSum=()=>Object.values(save.stars).reduce((a,b)=>a+b,0);
@@ -855,7 +855,7 @@ function startRun(n){
   ws:[{id:ch.w,lv:1,cdT:.3}],ps:{},boss:null,portal:null,orbA:0,bladeT:0,bladeA:0,orbs:[],
   spawnAcc:0,waveT:45,eliteIdx:0,nextBossT:180,bossCycle:0,portalMsg:false,
   p:{x:0,y:0,r:14,hp:10,max:10,face:1,bob:0,iT:1,dashT:0,dashCD:0,dx:1,dy:0,skillCD:0,shield:0,shieldT:0,bloodT:0,ghostT:0,mvx:0,mvy:0},
-  st:{},arena:1150+cfg.biome*60,decor:[],lvlQueue:0,chestBoost:false};
+  st:{},arena:1150+cfg.biome*60,decor:[],lvlQueue:save.upgrades.lvl||0,startPicks:save.upgrades.lvl||0,chestBoost:false};
  run.need=xpNeed(run.lvl);
  const R=mulberry(n*7919+3);
  for(let i=0;i<(save.settings.quality==='low'?40:75);i++){const a=R()*TAU,d=140+R()*(run.arena-220);run.decor.push({x:Math.cos(a)*d,y:Math.sin(a)*d,k:R()<.4?0:1,s:.8+R()*.7})}
@@ -872,6 +872,7 @@ function startRun(n){
  banner(cfg.endless?'VỰC VÔ TẬN':('ẢI '+n+' — '+cfg.name));
  if(cfg.boss)delay(2,()=>banner('Trùm sẽ xuất hiện sau 4:10','boss'));
  if(n===1&&!save.seenGuide2){save.seenGuide2=true;saveSoon();delay(1,()=>toast('⚔️ Vũ khí tự đánh — hãy di chuyển & né!','ok'));delay(4,()=>toast('💎 Nhặt ngọc xanh để thăng cấp',''));delay(8,()=>toast(isTouch?'💨 Nút 💨 = lướt né · nút to = kỹ năng':'💨 Space = lướt né · E = kỹ năng',''))}
+ if(run.lvlQueue>0)openLevel(false);
 }
 function applyStats(full){const ch=run.ch,u=save.upgrades,ps=run.ps,L=id=>ps[id]||0;
  const st=run.st;
@@ -1101,7 +1102,7 @@ function rollOptions(){const pool=[];
  return opts}
 function openLevel(chest){lvChest=chest;GS='levelup';lvOptions=rollOptions();
  const mL=$('mLevel');mL.classList.toggle('gold',chest);
- $('lvTitle').textContent=chest?'👑 RƯƠNG TINH ANH':'THĂNG CẤP — Lv '+run.lvl;
+ $('lvTitle').textContent=chest?'👑 RƯƠNG TINH ANH':(run.startPicks>0&&GS==='levelup'&&!chest)?'🚀 KHỞI ĐẦU — Thẻ '+(Math.max(1,(save.upgrades.lvl||0)-run.startPicks+1))+'/'+(save.upgrades.lvl||0):'THĂNG CẤP — Lv '+run.lvl;
  $('lvSub').textContent=chest?'Chiến lợi phẩm hiếm — chọn một cường hóa':isTouch?'Chạm một thẻ để chọn cường hóa':'Chọn một cường hóa (phím 1·2·3)';
  const box=$('lvCards');box.innerHTML='';
  lvOptions.forEach((o,i)=>{const card=h('div','lvCard'+(o.rar==='r'?' rar':o.rar==='l'?' leg':''));
@@ -1126,7 +1127,7 @@ function pickOption(i){const o=lvOptions[i];if(!o)return;sfx('buy');
  if(o.rar==='r')healP(10);
  if(o.rar==='l'){run.bonusEss=(run.bonusEss||0)+15}
  refreshBuildUI();afterPick()}
-function afterPick(){run.lvlQueue=Math.max(0,run.lvlQueue-1);
+function afterPick(){run.lvlQueue=Math.max(0,run.lvlQueue-1);if(run.startPicks>0)run.startPicks--;
  if(run.lvlQueue>0){openLevel(false)}else{closeModal();GS='play'}}
 on($('btnReroll'),'click',()=>{if(run.rerolls<=0)return;run.rerolls--;sfx('click');lvOptions=rollOptions();closeModal();openLevel(lvChest)});
 on($('btnSkip'),'click',()=>{sfx('click');healP(12);afterPick()});
