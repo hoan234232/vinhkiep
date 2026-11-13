@@ -8,7 +8,7 @@ Bạn chọn một anh hùng, bước vào một ải kéo dài khoảng 5 phút
 
 - **Vũ khí tự động tấn công** — việc của bạn là di chuyển, né đòn và lùa quái.
 - Nhặt **ngọc kinh nghiệm** để thăng cấp. Mỗi cấp chọn 1 trong 3 cường hóa, có thể đổi lựa chọn hoặc bỏ qua.
-- Mỗi anh hùng dùng **vũ khí độc quyền** của mình, nhặt thêm **Ngũ Hành Châu** (vũ khí dùng chung) và tối đa **5 bí pháp**, kèm độ hiếm Thường / Hiếm / Truyền thuyết.
+- Mỗi anh hùng bắt đầu với **vũ khí riêng**. Mỗi ván, pool thăng cấp mở thêm **2 vũ khí ngẫu nhiên của anh hùng khác** cùng **Ngũ Hành Châu** (dùng chung) — ghép tối đa **4 vũ khí + 5 bí pháp**, kèm độ hiếm Thường / Hiếm / Truyền thuyết.
 - **Tinh anh** rơi rương báu; **trùm** nhiều giai đoạn, hạ trùm để thắng ải trùm.
 - Chết hay thắng đều nhận **Tinh Hoa** — giữ lại để nâng cấp vĩnh viễn.
 
@@ -17,7 +17,7 @@ Bạn chọn một anh hùng, bước vào một ải kéo dài khoảng 5 phút
 | | |
 |---|---|
 | Anh hùng | 12, mỗi người một vũ khí khởi đầu và một kỹ năng riêng (phím E / nút to) |
-| Vũ khí | 13 — 12 vũ khí độc quyền của từng anh hùng + Ngũ Hành Châu dùng chung |
+| Vũ khí | 13 — 12 vũ khí riêng của từng anh hùng (mỗi ván chỉ mở thêm 2 vũ khí của người khác) + Ngũ Hành Châu dùng chung |
 | Bí pháp | 8 |
 | Ải | 60 ải qua 6 vùng đất: Rừng Sương, Mộ Địa Hồn Treo, Sa Mạc Tàn Tro, Đỉnh Băng Vĩnh Cửu, Hỏa Ngục Tận Thế, Vực Hư Không — cộng chế độ **Vực Vô Tận** |
 | Đền Luân Hồi | 11 nâng cấp vĩnh viễn bằng Tinh Hoa |
@@ -49,9 +49,9 @@ Tiến trình (anh hùng, Tinh Hoa, nâng cấp, thành tựu) lưu trong `local
 ## Thay đổi ở bản này
 
 - Sửa lỗi Chưởng Lực không gây sát thương (biến `ang` chưa khai báo).
-- Khóa vũ khí độc quyền: vũ khí khởi đầu của mỗi anh hùng không còn lọt vào lựa chọn thăng cấp của anh hùng khác (chỉ Ngũ Hành Châu dùng chung).
+- Khóa vũ khí riêng theo anh hùng: mỗi ván chỉ bốc ngẫu nhiên 2 vũ khí của anh hùng khác vào pool thăng cấp (cộng Ngũ Hành Châu), nên tối đa 4 vũ khí mỗi ván.
 - Giao diện màn dọc: nút ×1/⏸ không còn tràn hay bị nút âm thanh che, chip ải gọn lại, thanh trùm và radar dời vị trí.
-- Thẻ thăng cấp xếp gọn hơn trên điện thoại; hàng nút của màn Tạm dừng dính ở đáy.
+- Thẻ thăng cấp xếp gọn hơn trên điện thoại (cả màn dọc lẫn màn ngang, không còn phải cuộn); hàng nút của màn Tạm dừng dính ở đáy.
 - Chữ hướng dẫn và toast đổi theo thiết bị (cảm ứng / bàn phím).
 
 ## Chưa kiểm chứng

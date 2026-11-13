@@ -319,7 +319,7 @@ body.touch .onKb{display:none}
   body.touch .lvCard .num{display:none}
   .mSub{margin:4px 0 10px}
 }
-@media(max-width:760px) and (max-height:480px){
+@media(max-height:480px){
   .modal{--mp:14px}
   .lvCards{grid-template-columns:repeat(3,1fr);gap:8px;max-height:none;overflow:visible}
   .lvCard{padding:8px}
@@ -462,7 +462,7 @@ body.touch .onKb{display:none}
     <div class="gRow"><span class="kbd"><span class="onKb">SPACE</span><span class="onTc">💨</span></span><span>Lướt né — bất tử trong khoảnh khắc<span class="onTc"> (nút 💨 bên phải)</span></span></div>
     <div class="gRow"><span class="kbd"><span class="onKb">E</span><span class="onTc">⚔️</span></span><span>Kỹ năng riêng của anh hùng<span class="onTc"> (nút to bên phải)</span></span></div>
     <div class="gRow"><span class="kbd"><span class="onKb">1·2·3</span><span class="onTc">☝️</span></span><span><span class="onKb">Chọn cường hóa khi thăng cấp · <b>R</b> đổi · <b>Esc</b> tạm dừng</span><span class="onTc">Chạm thẻ để chọn cường hóa khi thăng cấp · nút <b>⏸</b> góc trên phải để tạm dừng</span></span></div>
-    <div class="gNote">⚔️ Vũ khí <b>tự tấn công</b> — việc của bạn là né và lùa quái.<br>💎 Nhặt ngọc kinh nghiệm để thăng cấp, mỗi anh hùng có <b>vũ khí độc quyền</b>, ghép thêm Ngũ Hành Châu và tối đa <b>5 bí pháp</b>.<br>👹 Tinh anh rơi <b>rương báu</b>. Ải trùm: hạ trùm để thắng. Ải thường: sống sót <b>5:00</b> rồi chạm cổng dịch chuyển.<br>✦ Tinh Hoa nhận được dùng để <b>nâng cấp vĩnh viễn</b> và mở khóa anh hùng mới — tử trận vẫn giữ!</div>
+    <div class="gNote">⚔️ Vũ khí <b>tự tấn công</b> — việc của bạn là né và lùa quái.<br>💎 Nhặt ngọc kinh nghiệm để thăng cấp, mỗi anh hùng có <b>vũ khí riêng</b>; mỗi ván mở thêm <b>2 vũ khí ngẫu nhiên</b> của anh hùng khác + Ngũ Hành Châu — ghép tối đa <b>4 vũ khí + 5 bí pháp</b>.<br>👹 Tinh anh rơi <b>rương báu</b>. Ải trùm: hạ trùm để thắng. Ải thường: sống sót <b>5:00</b> rồi chạm cổng dịch chuyển.<br>✦ Tinh Hoa nhận được dùng để <b>nâng cấp vĩnh viễn</b> và mở khóa anh hùng mới — tử trận vẫn giữ!</div>
     <div class="pzBtns"><button class="btn gold" id="btnGuideOk">Đã Rõ!</button></div>
   </div>
 
@@ -1063,8 +1063,9 @@ function gainXP(v){run.xp+=v*run.st.xpm;
  if(run.lvlQueue>0&&GS==='play')openLevel(false)}
 let lvOptions=[],lvChest=false;
 function rollOptions(){const pool=[];
+ if(!run.extraW)run.extraW=Object.keys(WEAPONS).filter(id=>WEAPONS[id].only&&WEAPONS[id].only!==run.ch.id).sort(()=>Math.random()-.5).slice(0,2);
  run.ws.forEach(w=>{if(w.lv<5)pool.push({kind:'w',id:w.id,lv:w.lv,wt:3})});
- if(run.ws.length<4)Object.keys(WEAPONS).forEach(id=>{if(!run.ws.find(w=>w.id===id)&&(!WEAPONS[id].only||WEAPONS[id].only===run.ch.id))pool.push({kind:'w',id,nw:true,wt:2})});
+ if(run.ws.length<4)Object.keys(WEAPONS).forEach(id=>{if(!run.ws.find(w=>w.id===id)&&(!WEAPONS[id].only||WEAPONS[id].only===run.ch.id||run.extraW.includes(id)))pool.push({kind:'w',id,nw:true,wt:2})});
  Object.keys(run.ps).forEach(id=>{if(run.ps[id]<5)pool.push({kind:'p',id,lv:run.ps[id],wt:2.5})});
  if(Object.keys(run.ps).length<5)Object.keys(PASSIVES).forEach(id=>{if(!(id in run.ps))pool.push({kind:'p',id,nw:true,wt:1.5})});
  const opts=[];
