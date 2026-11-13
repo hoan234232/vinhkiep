@@ -258,6 +258,7 @@ body.touch #skillBtn{width:84px;height:84px}body.touch #dashBtn{width:66px;heigh
 .eTotal{display:flex;justify-content:space-between;border-top:1px dashed #6b5518;margin-top:8px;padding-top:9px;font-weight:900;font-size:16px;color:var(--gold)}
 #rsTip{text-align:center;font-size:12px;color:var(--mut);margin-top:14px;font-style:italic}
 .rsBtns{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin-top:16px}
+.rsBtns .btn{flex:1 1 calc(50% - 10px);min-width:130px;max-width:260px;justify-content:center;text-align:center}
 .pzCols{display:flex;gap:16px;flex-wrap:wrap}
 .pzCol{flex:1;min-width:250px}
 .pzH{font-size:11px;font-weight:900;letter-spacing:.18em;text-transform:uppercase;color:var(--cyan);margin:10px 0 8px}
@@ -294,17 +295,22 @@ body.touch .onKb{display:none}
 .lvCard .lp:empty{display:none}
 @media(max-width:760px){
   .modal{--mp:16px;max-height:94vh;max-height:94dvh}
-  #muteBtn{top:8px;right:8px;width:40px;height:40px;font-size:18px}
-  .hudTop{top:8px;left:8px;right:56px;gap:6px}
+  #muteBtn{top:12px;right:8px;width:42px;height:42px;font-size:18px}
+  .hudTop{top:12px;left:8px;right:58px;gap:6px;align-items:center}
   .hudChip{padding:5px 8px;font-size:11px;gap:4px;border-radius:9px}
   .stB{display:none}
   #hudTimerBox{padding:3px 10px;margin:0 auto}
   #hudTimer{font-size:19px}
   #hudPhase{font-size:8.5px;letter-spacing:.14em}
-  .hudBtns{position:fixed;top:54px;right:8px;gap:6px}
-  .hBtn{width:44px;height:44px}
-  #bossBar{top:60px;left:8px;right:104px;width:auto;transform:none}
-  #radar{top:104px;right:8px}
+  .hudBtns{position:fixed;top:60px;right:8px;gap:8px;flex-direction:column}
+  .hBtn{width:42px;height:42px;border-radius:12px}
+  #speedBtn{font-size:12px;letter-spacing:-.02em}
+  .hudBL,body.touch .hudBL{top:58px;bottom:auto;left:8px;gap:8px}
+  #portrait{width:42px;height:42px}
+  .hpBox{width:min(150px,40vw)}
+  #hpTr{height:14px}
+  #bossBar{top:108px;left:8px;right:60px;width:auto;transform:none}
+  #radar{top:156px;right:8px;width:72px;height:72px}
 }
 @media(max-width:760px) and (min-height:481px){
   .lvCards{gap:8px;max-height:none;overflow:visible}
@@ -913,8 +919,8 @@ function showResults(){if(run.saved)return;run.saved=true;
  if(win&&!cfg.endless&&n<60)mk('Ải tiếp theo →','gold',()=>startRun(n+1));
  if(win&&n===60)mk('∞ Vô Tận','gold',()=>startRun(61));
  mk('↻ Chơi lại',win?'':'gold',()=>startRun(n));
- mk('🗺️ Bản đồ','',()=>{leaveRun();UI.show('scrMap')});
- mk('✦ Nâng cấp','',()=>{leaveRun();UI.show('scrShop')});
+ mk('🗺️ Bản đồ','',()=>{closeModal();leaveRun();UI.show('scrMap')});
+ mk('✦ Nâng cấp','',()=>{closeModal();leaveRun();UI.show('scrShop')});
  openModal('mResult');
  let c=0;const target=total,t0=performance.now();
  const cnt=()=>{const k=Math.min(1,(performance.now()-t0)/900);c=Math.floor(target*(1-Math.pow(1-k,3)));const el=$('essCount');if(el)el.textContent='✦ '+fmtN(c);if(k<1&&run&&run.saved)requestAnimationFrame(cnt)};cnt();
@@ -1443,7 +1449,7 @@ function updateHUD(force){if(!run)return;const p=run.p,cfg=run.cfg;
  $('skillBtn').classList.toggle('ready',p.skillCD<=0);
  $('dashBtn').style.background='conic-gradient(rgba(167,139,255,.35) '+(daP*360)+'deg, rgba(11,13,30,.9) 0deg)';
  $('dashBtn').classList.toggle('ready',p.dashCD<=0);
- $('speedBtn').textContent='×'+save.settings.speed;
+ $('speedBtn').textContent=fmtSpeed(save.settings.speed);
 }
 function refreshBuildUI(){if(!run)return;
  $('wChips').innerHTML=run.ws.map(w=>'<div class="wChip" title="'+WEAPONS[w.id].n+' Lv'+w.lv+'">'+WEAPONS[w.id].icon+'<i>'+w.lv+'</i></div>').join('');
@@ -1456,6 +1462,8 @@ const UI={cur:'scrTitle',
   if(id==='scrShop')buildShop();if(id==='scrAch')buildAch();if(id==='scrSettings')buildSettings($('setBox'),false);
   refreshEssence()},
  hideScreens(){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'))}};
+const SPEEDS=[1,1.25,1.5,2];
+function fmtSpeed(v){return '×'+String(v).replace('.',',')}
 let modalCur=null;
 function openModal(id){$('modals').classList.add('on');document.querySelectorAll('.modal').forEach(m=>m.classList.remove('active'));$(id).classList.add('active');modalCur=id}
 function closeModal(){$('modals').classList.remove('on');document.querySelectorAll('.modal').forEach(m=>m.classList.remove('active'));modalCur=null}
@@ -1592,9 +1600,9 @@ function buildSettings(box,compact){box.innerHTML='';
  const sel=h('select');[['low','Thấp'],['med','Vừa'],['high','Cao']].forEach(q=>{const o=h('option','',q[1]);o.value=q[0];if(save.settings.quality===q[0])o.selected=true;sel.appendChild(o)});
  on(sel,'change',()=>{save.settings.quality=sel.value;resize();saveSoon();sfx('click')});
  row('✨ Chất lượng hiệu ứng','Số hạt & độ phân giải',sel);
- const seg=h('div','seg');[1,2].forEach(v=>{const b=h('button',save.settings.speed===v?'on':'','×'+v);
+ const seg=h('div','seg');SPEEDS.forEach(v=>{const b=h('button',save.settings.speed===v?'on':'',fmtSpeed(v));
   on(b,'click',()=>{save.settings.speed=v;seg.querySelectorAll('button').forEach(x=>x.classList.remove('on'));b.classList.add('on');saveSoon();sfx('click');if(run)updateHUD(true)});seg.appendChild(b)});
- row('⏩ Tốc độ trận đấu','×2 rút ngắn thời gian thực, game vẫn đủ 5 phút',seg)}
+ row('⏩ Tốc độ trận đấu','×1 / ×1,25 / ×1,5 / ×2 — nhanh hơn thì rút ngắn thời gian thực, game vẫn đủ 5 phút',seg)}
 on($('btnReset'),'click',()=>{sfx('click');confirmBox('Xóa vĩnh viễn toàn bộ tiến trình, anh hùng và Tinh Hoa?',()=>{try{localStorage.removeItem(KEY)}catch(e){}location.reload()})});
 function openPause(){if(GS!=='play')return;GS='pause';
  $('pzStats').textContent=(run.cfg.endless?'Vô Tận':run.cfg.name)+' · '+fmtT(run.t)+' · '+fmtN(run.kills)+' diệt · Lv '+run.lvl;
@@ -1608,7 +1616,7 @@ on($('pauseBtn'),'click',()=>{if(GS==='play')openPause()});
 on($('btnResume'),'click',closePause);
 on($('btnRestart'),'click',()=>{sfx('click');const n=run.n;closeModal();startRun(n)});
 on($('btnQuit'),'click',()=>{sfx('click');confirmBox('Rút lui? Bạn giữ Tinh Hoa đã kiếm được nhưng ải chưa vượt.',()=>{quitRun()})});
-on($('speedBtn'),'click',()=>{save.settings.speed=save.settings.speed===1?2:1;saveSoon();sfx('click');updateHUD(true)});
+on($('speedBtn'),'click',()=>{const i=SPEEDS.indexOf(save.settings.speed);save.settings.speed=SPEEDS[(i+1)%SPEEDS.length];saveSoon();sfx('click');updateHUD(true)});
 on($('skillBtn'),'pointerdown',e=>{e.preventDefault();useSkill()});
 on($('dashBtn'),'pointerdown',e=>{e.preventDefault();useDash()});
 
@@ -1655,7 +1663,7 @@ function loop(now){requestAnimationFrame(loop);
   void el.offsetWidth;el.classList.add('show');bT=1.85}
  if(run){
   if(GS==='play'){
-   let dt=dtRaw*save.settings.speed;
+   let dt=dtRaw*(SPEEDS.includes(save.settings.speed)?save.settings.speed:1);
    if(hitstop>0){hitstop-=dtRaw;dt=0}
    if(dt>0)update(dt);
    hudT-=dtRaw;if(hudT<=0){hudT=.1;updateHUD()}

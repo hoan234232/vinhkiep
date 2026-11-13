@@ -22,7 +22,7 @@ Bạn chọn một anh hùng, bước vào một ải kéo dài khoảng 5 phút
 | Ải | 60 ải qua 6 vùng đất: Rừng Sương, Mộ Địa Hồn Treo, Sa Mạc Tàn Tro, Đỉnh Băng Vĩnh Cửu, Hỏa Ngục Tận Thế, Vực Hư Không — cộng chế độ **Vực Vô Tận** |
 | Đền Luân Hồi | 11 nâng cấp vĩnh viễn bằng Tinh Hoa |
 | Thành tựu | 17 |
-| Tốc độ | ×1 / ×2 ngay trong trận |
+| Tốc độ | ×1 / ×1,25 / ×1,5 / ×2 ngay trong trận (nút ở cột bên phải, hoặc trong Cài đặt) |
 
 ## Điều khiển
 
@@ -57,3 +57,6 @@ Tiến trình (anh hùng, Tinh Hoa, nâng cấp, thành tựu) lưu trong `local
 ## Chưa kiểm chứng
 
 Bản này mới được kiểm tra bằng trình duyệt giả lập; chưa thử trên máy thật nên cảm giác cầm tay, FPS thực và âm thanh chưa được xác nhận.
+- Sửa lỗi bấm **Bản đồ** / **Nâng cấp** trên màn Chiến Thắng không phản hồi (bảng kết quả không được đóng nên chặn mọi lần bấm); 4 nút kết quả xếp đều 2×2.
+- Thêm tốc độ ×1,25 và ×1,5 (nút ×N trong trận bấm xoay vòng, Cài đặt có đủ 4 mức).
+- HUD màn dọc gọn lại: HP + cấp ở góc trái trên (không còn nổi giữa màn hình), nút âm thanh / tốc độ / tạm dừng xếp một cột đều nhau, radar nằm ngay dưới, thanh trùm dời xuống dưới HP.
